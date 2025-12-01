@@ -5,6 +5,7 @@ class Dial:
         self.current = 50
         self.high = 99
         self.low = 0
+        self.times_touched_zero = 0
 
     def move_right(self):
         self.current += 1
@@ -31,15 +32,25 @@ def process_instruction(instruction: str):
     return direction, places
 
 
+# Check if dial has touched zero
+def check_dial(dial: Dial):
+    if dial.current == 0:
+        dial.times_touched_zero +=1
+    else:
+        pass
+
+
 # Move the dial
 def move_dial(dial: Dial, direction: str, places: int):
     if direction == "L":
         for _ in range(places):
             dial.move_left()
+            check_dial(dial)
     
     else:
         for _ in range(places):
             dial.move_right()
+            check_dial(dial)
 
 
 def part_1_script():
@@ -62,5 +73,16 @@ def part_1_script():
         
     print(times_at_zero)
 
+def part_2_script():
+    puzzle_input = import_puzzle_input("puzzle_inputs/day_1.txt")
+    dial = Dial()
+
+    for instruction in puzzle_input:
+        direction, places = process_instruction(instruction)
+        move_dial(dial, direction, places)
+
+    print(dial.times_touched_zero)
+
 part_1_script()
+part_2_script()
 
