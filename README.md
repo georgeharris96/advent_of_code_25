@@ -8,7 +8,7 @@ This repository contains my personal solutions for the [Advent of Code 2025](htt
 
 ### Prerequisites
 
-You need **Python 3.10+** and **Poetry** installed to run these solutions.
+You need **Python 3.13+** and **Poetry** installed to run these solutions.
 
 1.  **Install Poetry:** Follow the instructions on the [Poetry website](https://python-poetry.org/docs/#installation).
 2.  **Install Dependencies:** Navigate to the root of this repository and run:
