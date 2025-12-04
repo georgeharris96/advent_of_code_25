@@ -1,4 +1,4 @@
-######### Part 1 #########
+######### Day 1 #########
 # Set up dial
 class Dial:
     def __init__(self):
