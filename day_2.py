@@ -44,7 +44,7 @@ def check_id_length(id_to_check:str) -> bool:
 
 
 # Check if ID is valid
-def is_valid_pattern(id_to_check:str):
+def is_valid_pattern(id_to_check: str) -> bool:
 
     # Check length of number
     if check_id_length(id_to_check):
@@ -56,6 +56,21 @@ def is_valid_pattern(id_to_check:str):
             return False
         else:
             return True
+        
+
+# Check if ID is repetitive
+def is_repetitve_id(id_to_check: str) -> bool:
+    length = len(id_to_check)
+    for chunk_size in range(1, (length // 2) + 1):
+        if length % chunk_size == 0:
+
+            pattern = id_to_check[:chunk_size]
+            multiplier = length // chunk_size
+            reconstructed_id = pattern * multiplier
+        
+            if reconstructed_id == id_to_check:
+                return True
+    return False
 
 # Part 1 script
 def part_1_script():
@@ -82,6 +97,34 @@ def part_1_script():
                 sum_of_invalid_ids += int(id_number)
     print(f"The sum of all the invalid ids is: {sum_of_invalid_ids}")
 
+
+#Part 2 script
+def part_2_script():
+
+    raw_puzzle_input = import_puzzle_input(
+        path = "puzzle_inputs/day_2.txt",
+        test = False,
+    )
+
+    split_puzzle_input = split_input(raw_puzzle_input)
+
+    sum_of_invalid_ids = 0
+    for raw_id_range in split_puzzle_input:
+            reformed_id_range = reformat_id_range(raw_id_range)
+            unpacked_id_range = unpack_range(reformed_id_range)
+
+
+            for id_number in unpacked_id_range:
+                id_status = is_valid_pattern(id_number)
+                id_repetitive = is_repetitve_id(id_number)
+
+                if id_status == True and id_repetitive == False:
+                    pass
+                else:
+                    sum_of_invalid_ids += int(id_number)
+
+    print(f"The sum of all the invalid ids is: {sum_of_invalid_ids}")
+
+
 part_1_script()
-
-
+part_2_script()
