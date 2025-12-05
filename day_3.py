@@ -1,6 +1,6 @@
 ######### Day 3 #########
 from itertools import combinations
-from typing import List
+from typing import List, Tuple
 
 # Get sample input
 def get_sample_input() -> List[str]:
@@ -25,13 +25,14 @@ def import_puzzle_input(path: str, test: bool = False) -> List[str]:
     return [line.strip("\n") for line in puzzle_input]
 
 
-# Check battery bank for largest joltage batteries
-def find_largest_in_battery_bank(battery_bank: str) -> int:
-    """Finds the largest joltage from a battery pair in a battery bank"""
-    # Create all joltage pairs
-    battery_bank_split: List[str] = [battery for battery in battery_bank]
-    joltage_pairs = [int(battery_1 + battery_2) for battery_1, battery_2 in combinations(battery_bank_split, 2)]
-    return max(joltage_pairs)
+# Check battery bank for largest n joltage batteries
+def find_largest_joltage_from_n_batteries_in_bank(battery_bank:str, number_of_batteries:int) -> int:
+    """Finds the largest joltage from n batteries in a battery bank"""
+    battery_bank_split = [int(battery) for battery in battery_bank]
+    joltage_combinations: List[int] = []
+    for combination in combinations(battery_bank_split, number_of_batteries):
+        joltage_combinations.append(int("".join([str(x) for x in combination])))
+    return max(joltage_combinations)
 
 
 # Part 1 script
@@ -41,12 +42,34 @@ def part_1_script():
         path="puzzle_inputs/day_3.txt",
         test=False,
     )
+
+    total_output_joltage = 0
+    for battery_bank in battery_banks:
+        total_output_joltage += find_largest_joltage_from_n_batteries_in_bank(
+            battery_bank=battery_bank,
+            number_of_batteries=2,
+        )
+    
+    print(f"The total output joltage is {total_output_joltage} jolts")
+
+# Part 2 script
+def part_2_script():
+    print("STARTING PART 2")
+    """The script for my solution of part 1"""
+    battery_banks = import_puzzle_input(
+        path="puzzle_inputs/day_3.txt",
+        test=True,
+    )
     
     total_output_joltage = 0
     for battery_bank in battery_banks:
-        total_output_joltage += find_largest_in_battery_bank(battery_bank)
+        total_output_joltage += find_largest_joltage_from_n_batteries_in_bank(
+            battery_bank = battery_bank, 
+            number_of_batteries=12,
+        )
     
     print(f"The total output joltage is {total_output_joltage} jolts")
 
 
 part_1_script()
+part_2_script()
