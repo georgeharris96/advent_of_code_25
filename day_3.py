@@ -1,5 +1,4 @@
 ######### Day 3 #########
-from itertools import combinations
 from typing import List, Any
 from tqdm import tqdm
 
