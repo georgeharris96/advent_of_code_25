@@ -59,9 +59,9 @@ def number_of_rolls_in_grid(grid:np.ndarray):
     """Finds the number of rolls inside of a grid"""
     return np.sum(grid)
 
-def find_accessible_rolls(floor_layout:np.ndarray) -> int:
+def find_accessible_rolls(floor_layout:np.ndarray) -> np.ndarray:
     """defines the search space and then retrives the number of rolls which are accessable"""
-    n_accessable_rolls = 0
+    accessible_rolls = np.zeros(shape=floor_layout.shape)
     search_space = (
         list(range(1, floor_layout.shape[0]-1)),
         list(range(1, floor_layout.shape[1]-1)),
@@ -70,8 +70,8 @@ def find_accessible_rolls(floor_layout:np.ndarray) -> int:
         for j in search_space[1]:
             if floor_layout[i, j] == 1:
                 if number_of_rolls_in_grid(floor_layout[i-1:i+2,j-1:j+2]) < 5:
-                    n_accessable_rolls += 1
-    return n_accessable_rolls
+                    accessible_rolls[i,j] = 1
+    return accessible_rolls
 
 
 # Part 1 script
@@ -83,8 +83,34 @@ def part_1_script():
     )
     floor_layout = create_grid(floor_layout)
 
-    print(f"The Number of accessable rolls is {find_accessible_rolls(floor_layout)}")
+    n_accessible_rolls = np.sum(find_accessible_rolls(floor_layout))
 
+    print(f"The number of accessible rolls is {n_accessible_rolls}")
+
+
+# Part 2 script
+def part_2_script():
+    """My solution to day 4 part 2"""
+    floor_layout = get_floor_layout(
+        path="puzzle_inputs/day_4.txt",
+        test=False
+    )
+    floor_layout = create_grid(floor_layout)
+
+    total_n_accessible_rolls = 0
+    n_accessible_rolls = None
+    iteration = 0
+    while n_accessible_rolls != 0:
+        accessible_rolls = find_accessible_rolls(floor_layout)
+        n_accessible_rolls = np.sum(accessible_rolls)
+        total_n_accessible_rolls += n_accessible_rolls
+        
+        floor_layout = floor_layout - accessible_rolls
+
+        iteration += 1
+    print(f"The total number of accessible rolls is {total_n_accessible_rolls}")
+    print(f"This was completed in {iteration} iterations")
 
 part_1_script()
+part_2_script()
 
