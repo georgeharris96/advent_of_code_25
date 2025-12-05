@@ -1,6 +1,7 @@
 ######### Day 3 #########
 from itertools import combinations
-from typing import List, Tuple
+from typing import List, Any
+from tqdm import tqdm
 
 # Get sample input
 def get_sample_input() -> List[str]:
@@ -26,13 +27,18 @@ def import_puzzle_input(path: str, test: bool = False) -> List[str]:
 
 
 # Check battery bank for largest n joltage batteries
-def find_largest_joltage_from_n_batteries_in_bank(battery_bank:str, number_of_batteries:int) -> int:
+def find_maximum_joltage_n_batteries_in_bank(battery_bank: str, number_of_batteries:int) -> int:
     """Finds the largest joltage from n batteries in a battery bank"""
-    battery_bank_split = [int(battery) for battery in battery_bank]
-    joltage_combinations: List[int] = []
-    for combination in combinations(battery_bank_split, number_of_batteries):
-        joltage_combinations.append(int("".join([str(x) for x in combination])))
-    return max(joltage_combinations)
+    pos = 0
+    n = len(battery_bank)
+    batteries:List[Any] = []
+
+    for remaining in range(number_of_batteries, 0, -1):
+        end = n - remaining + 1
+        best_digit = max(battery_bank[pos:end])
+        pos = battery_bank.index(best_digit, pos, end) + 1
+        batteries.append(best_digit)
+    return int("".join(batteries))
 
 
 # Part 1 script
@@ -44,8 +50,8 @@ def part_1_script():
     )
 
     total_output_joltage = 0
-    for battery_bank in battery_banks:
-        total_output_joltage += find_largest_joltage_from_n_batteries_in_bank(
+    for battery_bank in tqdm(battery_banks):
+        total_output_joltage += find_maximum_joltage_n_batteries_in_bank(
             battery_bank=battery_bank,
             number_of_batteries=2,
         )
@@ -54,16 +60,15 @@ def part_1_script():
 
 # Part 2 script
 def part_2_script():
-    print("STARTING PART 2")
     """The script for my solution of part 1"""
     battery_banks = import_puzzle_input(
         path="puzzle_inputs/day_3.txt",
-        test=True,
+        test=False,
     )
     
     total_output_joltage = 0
-    for battery_bank in battery_banks:
-        total_output_joltage += find_largest_joltage_from_n_batteries_in_bank(
+    for battery_bank in tqdm(battery_banks):
+        total_output_joltage += find_maximum_joltage_n_batteries_in_bank(
             battery_bank = battery_bank, 
             number_of_batteries=12,
         )
