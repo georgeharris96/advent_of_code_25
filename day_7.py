@@ -68,7 +68,7 @@ def turn_on_classical_beams(manifold:List[str]) -> Tuple[List[str], int]:
         edited_manifold.append("".join(edited_layer))
     return edited_manifold, number_of_splits
 
-def turn_on_quantum_beams(manifold:List[str]) -> Tuple[List[str], int]:
+def turn_on_quantum_beams(manifold:List[str]) -> collections.defaultdict:
     """Takes a manifold and turns on the a quantum tachyon beam"""
     tachyons = collections.defaultdict(int)
     tachyons[manifold[0].find("S")] += 1

@@ -5,8 +5,8 @@ import numpy as np
 # Get homework
 def get_sample_homework() -> List[str]:
     sample_homework = [
-    "123 328  51  64\n",
-    " 45 64  387  23\n",
+    "123 328  51 64 \n",
+    " 45 64  387 23 \n",
     "  6 98  215 314\n",
     "*   +   *   +\n",
     ]
@@ -53,5 +53,75 @@ def part_1_script():
     
     print(f"The grand total of all the answers is {sum(answers)}")
 
+def part_2_script():
+    homework = get_homework(
+        path="puzzle_inputs/day_6.txt",
+        test=False, # Set to True to verify against the example
+    )
+    
+    number_lines = homework[:-1]
+    operator_line = homework[-1]
+
+    max_width = max(len(line) for line in number_lines)
+    max_width = max(max_width, len(operator_line))
+    
+    padded_numbers = [line.ljust(max_width) for line in number_lines]
+    padded_operator_line = operator_line.ljust(max_width)
+    
+    blocks = []
+    in_block = False
+    block_start = 0
+    
+    all_lines = padded_numbers + [padded_operator_line]
+    
+    for col in range(max_width):
+        is_empty = all(line[col] == " " for line in all_lines)
+        
+        if not is_empty:
+            if not in_block:
+                in_block = True
+                block_start = col
+        else:
+            if in_block:
+                in_block = False
+                blocks.append((block_start, col))
+    
+    if in_block:
+        blocks.append((block_start, max_width))
+
+    grand_total = 0
+    
+    for start, end in blocks:
+        op_segment = padded_operator_line[start:end].strip()
+        operator = op_segment
+        
+        current_block_numbers = []
+        
+        for col in range(end - 1, start - 1, -1):
+            col_str = ""
+            for row in padded_numbers:
+                col_str += row[col]
+            
+            clean_str = col_str.replace(" ", "")
+            
+            if clean_str:
+                current_block_numbers.append(int(clean_str))
+        
+        if not current_block_numbers:
+            continue
+            
+        block_answer = current_block_numbers[0]
+        for num in current_block_numbers[1:]:
+            if operator == "+":
+                block_answer += num
+            elif operator == "*":
+                block_answer *= num
+        
+        grand_total += block_answer
+
+    print(f"Part 2 Grand Total: {grand_total}")
+
 
 part_1_script()
+part_2_script()
+
