@@ -103,9 +103,8 @@ def part_2_script():
     )
 
     possible_beam_locations = turn_on_quantum_beams(manifold)
+    print(f"The number of possible paths is {sum(possible_beam_locations.values())}")
 
-    print(sum(possible_beam_locations.values()))
-    
 
 part_1_script()
 part_2_script()
