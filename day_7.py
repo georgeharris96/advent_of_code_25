@@ -1,4 +1,4 @@
-######## Day 6 #########
+######## Day 7 #########
 from typing import List, Tuple
 import itertools
 import collections
